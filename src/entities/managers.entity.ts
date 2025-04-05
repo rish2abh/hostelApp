@@ -65,14 +65,20 @@ export class Manager extends Document {
   @Prop()
   phoneNumber?: string;
 
-//   @ApiProperty({ 
-//     example: ['507f1f77bcf86cd799439011'],
-//     description: 'Array of room IDs assigned to this user',
-//     type: [String],
-//     required: false
-//   })
-//   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Room' }] })
-//   assignedRooms: MongooseSchema.Types.ObjectId[];
+  @Prop({ type: Map, of: Boolean, default: {} })
+  @ApiProperty({
+    example: {
+      user: true,
+      manager: false,
+      dashboard: true,
+    },
+    description: 'Object where keys represent permissions/modules and values are boolean flags',
+    type: 'object',
+    additionalProperties: { type: 'boolean' }
+  })
+  permissions: Record<string, boolean>;
+  
+
 
   @ApiProperty({
     example: '2024-03-25T10:30:00.000Z',

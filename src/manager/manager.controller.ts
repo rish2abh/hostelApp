@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ManagerService } from './manager.service';
-import { CreateManagerDto } from './dto/create-manager.dto';
+import { CreateManagerDto, LoginDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { managerRole } from 'src/entities/managers.entity';
 import { User } from '../auth/decorators/user.decorator';
@@ -10,18 +10,24 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 
 @Controller('manager')
-@UseGuards(JwtAuthGuard, RolesGuard)
+// @UseGuards(JwtAuthGuard, RolesGuard)
 
 export class ManagerController {
   constructor(private readonly managerService: ManagerService) {}
 
-  @Post()
-  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  @Post("create")
+  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   create(@Body() createManagerDto: CreateManagerDto) {
     return this.managerService.create(createManagerDto);
   }
 
-  @Get()
+  @Post("login")
+  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  login(@Body() loginDto: LoginDto) {
+    return this.managerService.login(loginDto);
+  }
+
+  @Get("list")
   // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   findAll() {
     return this.managerService.findAll();

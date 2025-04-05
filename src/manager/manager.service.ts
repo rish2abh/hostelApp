@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException } from '@nestjs/common';
-import { CreateManagerDto } from './dto/create-manager.dto';
+import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { CreateManagerDto, LoginDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { Manager, managerRole } from 'src/entities/managers.entity';
 import { Model, Schema as MongooseSchema } from 'mongoose';
+import { JwtService } from '@nestjs/jwt'
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 
@@ -13,6 +14,7 @@ export class ManagerService {
 
   constructor(
      @InjectModel(Manager.name) private managerModel: Model<Manager>,
+     private readonly jwtService: JwtService,
    ) {}
 
 
@@ -29,6 +31,31 @@ export class ManagerService {
     });
 
     return createdUser.save();
+  }
+
+  async login(loginDto: LoginDto): Promise<{ token: string }> {
+    const isUser = await this.managerModel.findOne({ email: loginDto.email });
+  
+    if (!isUser) {
+      throw new ConflictException('Incorrect email. Please check and try again.');
+    }
+  
+    const isPasswordMatch = await bcrypt.compare(loginDto.password, isUser.password);
+  
+    if (!isPasswordMatch) {
+      throw new UnauthorizedException('Incorrect password');
+    }
+  
+    const payload = {
+      sub: isUser._id,
+      email: isUser.email,
+      role: isUser.role,
+      permission: isUser.permissions,
+    };
+  
+    const token = await this.jwtService.signAsync(payload);
+  
+    return { token };
   }
 
   async findAll(): Promise<Manager[]> {
