@@ -12,7 +12,7 @@ export class CreateRoomDto {
   })
   @IsString()
   @IsNotEmpty()
-  @IsRoomNumberUnique()
+  // @IsRoomNumberUnique()
   roomNumber: string;
 
   @ApiProperty({
@@ -36,16 +36,6 @@ export class CreateRoomDto {
   capacity: number;
 
   @ApiProperty({
-    example: 5000,
-    description: 'Monthly rent amount',
-    minimum: 0,
-    required: true
-  })
-  @IsNumber()
-  @Min(0)
-  rent: number;
-
-  @ApiProperty({
     example: ['http://example.com/image1.jpg', 'http://example.com/image2.jpg'],
     description: 'Array of room image URLs',
     required: false,
@@ -63,7 +53,7 @@ export class CreateRoomDto {
     required: true
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   description: string;
 
   @ApiProperty({

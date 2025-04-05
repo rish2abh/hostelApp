@@ -173,7 +173,7 @@ export class BedsController {
     return this.bedsService.remove(id);
   }
 
-  @Get('room/:roomId')
+  @Post('room/:roomId')
   @ApiOperation({ 
     summary: 'Get room beds',
     description: 'Retrieve all beds in a specific room.'
@@ -193,8 +193,10 @@ export class BedsController {
     status: 404, 
     description: 'Room not found.' 
   })
-  findByRoom(@Param('roomId') roomId: string) {
-    return this.bedsService.findByRoom(roomId);
+  findByRoom(@Param('roomId') roomId: string,
+  @Body() updateBedDto: UpdateBedDto
+) {
+    return this.bedsService.findByRoom(roomId,updateBedDto);
   }
 
   @Get('available/all')

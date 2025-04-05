@@ -31,3 +31,4 @@ export class CreateBedDto {
   @IsOptional()
   features?: string[];
 } 
+

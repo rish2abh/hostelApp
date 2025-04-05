@@ -16,9 +16,6 @@ export class Room extends Document {
   @Prop({ required: true })
   capacity: number;
 
-  @ApiProperty({ example: 5000, description: 'Monthly rent amount', minimum: 0 })
-  @Prop({ required: true })
-  rent: number;
 
   @ApiProperty({ 
     example: ['http://example.com/image1.jpg'], 
@@ -30,27 +27,9 @@ export class Room extends Document {
   images: string[];
 
   @ApiProperty({ example: 'Spacious room with balcony', description: 'Detailed description of the room' })
-  @Prop({ required: true })
+  @Prop({ required: false })
   description: string;
 
-  @ApiProperty({ 
-    example: ['507f1f77bcf86cd799439011'],
-    description: 'Array of bed IDs assigned to this room',
-    isArray: true,
-    type: [String],
-    required: false
-  })
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Bed' }] })
-  beds: MongooseSchema.Types.ObjectId[];
-
-  @ApiProperty({ 
-    example: '507f1f77bcf86cd799439011',
-    description: 'ID of the assigned user',
-    required: false,
-    type: String
-  })
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  assignedUser: MongooseSchema.Types.ObjectId;
 
   @ApiProperty({ 
     example: false, 

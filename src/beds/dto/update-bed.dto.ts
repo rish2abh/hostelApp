@@ -23,5 +23,5 @@ export class UpdateBedDto extends PartialType(
   })
   @IsString()
   @IsOptional()
-  currentOccupantId?: string;
+  assignedUser?: string;
 } 

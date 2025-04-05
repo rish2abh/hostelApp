@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import { User, UserRole } from '../entities/user.entity';
@@ -13,18 +13,29 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const existingUser = await this.userModel.findOne({ email: createUserDto.email });
-    if (existingUser) {
-      throw new ConflictException('Email already exists');
+    try {
+      const existingUser = await this.userModel.findOne({
+        $or: [
+          { email: createUserDto.email },
+          // { phoneNumber: createUserDto.phoneNumber }
+        ]
+      });
+  
+      if (existingUser)  throw new ConflictException('Email or phone number already exists');
+  
+      const data = await this.userModel.create(createUserDto)
+  
+      if (!data) throw new InternalServerErrorException('User not created');
+
+      return data;
+  
+    } catch (error) {
+      if (error.name === 'ValidationError') throw new BadRequestException(error.message);
+  
+      if (error.name === 'CastError') throw new BadRequestException(`Invalid value for field "${error.path}": ${error.value}`);
+    
+      throw error;
     }
-
-    // const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    const createdUser = new this.userModel({
-      ...createUserDto,
-      // password: hashedPassword,
-    });
-
-    return createdUser.save();
   }
 
   async findAll(): Promise<User[]> {
@@ -96,11 +107,11 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    const roomObjectId = new MongooseSchema.Types.ObjectId(roomId);
-    if (!user.assignedRooms.includes(roomObjectId)) {
-      user.assignedRooms.push(roomObjectId);
-      await user.save();
-    }
+    // const roomObjectId = new MongooseSchema.Types.ObjectId(roomId);
+    // if (!user.assignedRooms.includes(roomObjectId)) {
+    //   user.assignedRooms.push(roomObjectId);
+    //   await user.save();
+    // }
 
     const updatedUser = await this.userModel.findById(userId).select('-password').exec();
     if (!updatedUser) {
@@ -115,7 +126,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    user.assignedRooms = user.assignedRooms.filter(id => id.toString() !== roomId);
+    // user.assignedRooms = user.assignedRooms.filter(id => id.toString() !== roomId);
     await user.save();
 
     const updatedUser = await this.userModel.findById(userId).select('-password').exec();

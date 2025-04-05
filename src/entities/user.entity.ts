@@ -66,13 +66,17 @@ export class User extends Document {
   phoneNumber?: string;
 
   @ApiProperty({ 
-    example: ['507f1f77bcf86cd799439011'],
+    example: '507f1f77bcf86cd799439011',
     description: 'Array of room IDs assigned to this user',
-    type: [String],
+    type: String,
     required: false
   })
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Room' }] })
-  assignedRooms: MongooseSchema.Types.ObjectId[];
+  @Prop({ type: { type: MongooseSchema.Types.ObjectId, ref: 'Room' } })
+  assignedRooms: MongooseSchema.Types.ObjectId;
+
+  
+  @Prop({ type: { type: MongooseSchema.Types.ObjectId, ref: 'Bed' } })
+  assignedBed: MongooseSchema.Types.ObjectId;
 
   @ApiProperty({
     example: '2024-03-25T10:30:00.000Z',
@@ -101,7 +105,22 @@ export class User extends Document {
     description: 'Array of documents associated with the user',
     isArray: true
   })
-  @Prop([{ type: String, required: true }])
+  @Prop([
+    {
+      type: {
+        type: String,
+        required: true
+      },
+      number: {
+        type: String,
+        required: true
+      },
+      expiryDate: {
+        type: Date,
+        required: true
+      }
+    }
+  ])
   documents: { type: string; number: string; expiryDate: Date }[];
 
   @ApiProperty({

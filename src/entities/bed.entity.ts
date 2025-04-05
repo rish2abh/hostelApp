@@ -12,7 +12,8 @@ export enum BedStatus {
   AVAILABLE = 'AVAILABLE',
   OCCUPIED = 'OCCUPIED',
   MAINTENANCE = 'MAINTENANCE',
-  RESERVED = 'RESERVED'
+  RESERVED = 'RESERVED',
+  ALL = "ALL"
 }
 
 @Schema({ timestamps: true })

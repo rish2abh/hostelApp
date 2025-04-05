@@ -1,63 +1,90 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsEnum, IsDate, IsOptional, IsObject, Min } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsEnum,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+  Min,
+  IsNumber
+} from 'class-validator';
 import { Type } from 'class-transformer';
-import { PaymentMethod } from '../../entities/payment.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { PaymentStatus } from 'src/entities/payment.entity';
 
-export class CreatePaymentDto {
-  @ApiProperty({
-    example: '507f1f77bcf86cd799439011',
-    description: 'ID of the user making the payment'
-  })
+
+class PaymentItemDto {
+  @ApiProperty({ example: 'Rent', description: 'Type of the payment item' })
   @IsString()
-  userId: string;
+  @IsNotEmpty()
+  type: string;
 
-  @ApiProperty({
-    example: '507f1f77bcf86cd799439012',
-    description: 'ID of the room this payment is for'
-  })
-  @IsString()
-  roomId: string;
-
-  @ApiProperty({
-    example: 5000,
-    description: 'Amount of the payment in the smallest currency unit (e.g., cents)',
-    minimum: 0
-  })
+  @ApiProperty({ example: 5000, description: 'Amount for this payment item', minimum: 0 })
   @IsNumber()
   @Min(0)
   amount: number;
+}
 
+export class CreatePaymentDto {
   @ApiProperty({
-    example: '2024-03-25T10:30:00.000Z',
-    description: 'Date when the payment was made'
+    type: [PaymentItemDto],
+    description: 'List of items included in the payment'
   })
-  @Type(() => Date)
-  @IsDate()
-  paymentDate: Date;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PaymentItemDto)
+  collectionItems: PaymentItemDto[];
 
-  @ApiProperty({
-    enum: PaymentMethod,
-    example: PaymentMethod.CARD,
-    description: 'Method used for payment'
-  })
-  @IsEnum(PaymentMethod)
-  paymentMethod: PaymentMethod;
-
-  @ApiProperty({
-    example: 'Rent payment for March 2024',
-    description: 'Additional notes about the payment',
-    required: false
-  })
+  @ApiProperty({ example: 'UPI', description: 'Payment method used' })
   @IsString()
-  @IsOptional()
-  notes?: string;
+  @IsNotEmpty()
+  paymentMethod: string;
 
-  @ApiProperty({
-    example: { invoiceNumber: 'INV-123', month: 'March 2024' },
-    description: 'Additional payment metadata',
-    required: false
-  })
-  @IsObject()
+  @ApiProperty({ enum: PaymentStatus, default: PaymentStatus.COMPLETED })
+  @IsEnum(PaymentStatus)
+  status: PaymentStatus;
+
+  @ApiProperty({ example: '2024-04-01', description: 'Date of payment' })
+  @IsDateString()
+  date: string;
+
+  @ApiProperty({ example: '2024-04-10', required: false })
   @IsOptional()
-  metadata?: Record<string, any>;
-} 
+  @IsDateString()
+  dueDate?: string;
+
+  @ApiProperty({ example: 'BILL-00123', required: false })
+  @IsOptional()
+  @IsString()
+  billNumber?: string;
+
+  @ApiProperty({ example: 'Monthly rent for April', description: 'Purpose of payment' })
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
+  @ApiProperty({ example: '660ff450f5eeb88e8b5ea3e2', description: 'User ID who collected the payment' })
+  @IsMongoId()
+  collectedBy: string;
+
+  @ApiProperty({ example: '660ff450f5eeb88e8b5ea3e4', description: 'User ID from whom payment was collected' })
+  @IsMongoId()
+  collectedFrom: string;
+
+  @ApiProperty({ example: '2024-04-01', required: false })
+  @IsOptional()
+  @IsDateString()
+  periodStart?: string;
+
+  @ApiProperty({ example: '2024-04-30', required: false })
+  @IsOptional()
+  @IsDateString()
+  periodEnd?: string;
+
+  @ApiProperty({ example: 'Payment collected late', required: false })
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}

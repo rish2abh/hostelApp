@@ -16,8 +16,8 @@ import { managerRole } from 'src/entities/managers.entity';
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
-  @Post()
-  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
+  @Post("create")
+  // @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create a new room',
     description: 'Creates a new room in the system. Only accessible by ADMIN and SUPER_ADMIN roles.'

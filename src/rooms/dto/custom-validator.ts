@@ -16,8 +16,8 @@ import {
     constructor(@InjectModel(Room.name) private readonly roomModel: Model<Room>) {}
   
     async validate(roomNumber: string, args: ValidationArguments) {
-      const existingRoom = await this.roomModel.findOne({ roomNumber }).exec();
-      return !existingRoom; // Returns false if the room number already exists
+      const existingRoom = await this.roomModel.findOne({ roomNumber:roomNumber }).exec();
+      return !existingRoom ;
     }
   
     defaultMessage(args: ValidationArguments) {

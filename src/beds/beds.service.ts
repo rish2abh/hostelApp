@@ -1,31 +1,45 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types, Schema as MongooseSchema } from 'mongoose';
+import mongoose, { Model, Types, Schema as MongooseSchema } from 'mongoose';
 import { Bed, BedStatus } from '../entities/bed.entity';
 import { CreateBedDto } from './dto/create-bed.dto';
 import { UpdateBedDto } from './dto/update-bed.dto';
+import { Room } from 'src/entities/room.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class BedsService {
   constructor(
     @InjectModel(Bed.name) private bedModel: Model<Bed>,
+    @InjectModel(Room.name) private roomModel: Model<Room>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
   async create(createBedDto: CreateBedDto) {
-    // Check if bed number already exists in the same room
-    const existingBed = await this.bedModel.findOne({
-      roomId: createBedDto.roomId,
-      bedNumber: createBedDto.bedNumber,
-    });
-
-    if (existingBed) {
-      throw new BadRequestException('Bed number already exists in this room');
+    const roomId = new mongoose.Types.ObjectId(createBedDto.roomId);
+  
+    // Run room and existing bed check in parallel
+    const [room, existingBed] = await Promise.all([
+      this.roomModel.findById(roomId).exec(),
+      this.bedModel.findOne({ roomId, bedNumber: createBedDto.bedNumber }).exec(),
+    ]);
+  
+    if (!room) {
+      throw new BadRequestException('Room does not exist');
     }
-
+  
+    if (existingBed)  throw new BadRequestException('Bed number already exists in this room');
+  
+    const bedCount = await this.bedModel.countDocuments({ roomId }).exec();
+  
+    if (bedCount >= room.capacity) {
+      throw new BadRequestException('Max number of beds already exist in this room');
+    }
+  
     const bed = new this.bedModel(createBedDto);
     return bed.save();
   }
-
+  
   async findAll() {
     return this.bedModel
       .find()
@@ -73,11 +87,21 @@ export class BedsService {
     return { message: 'Bed deleted successfully' };
   }
 
-  async findByRoom(roomId: string) {
-    return this.bedModel
-      .find({ roomId })
-      .populate('assignedUser', 'firstName lastName email');
+  async findByRoom(roomId: string, updateBedDto: UpdateBedDto) {
+    const filter: any = { roomId: new mongoose.Types.ObjectId(roomId) };
+  
+    if (updateBedDto.status !== 'ALL') {
+      filter.status = updateBedDto.status;
+    }
+  
+    const data = await this.bedModel
+      .find(filter)
+      .populate('users', 'firstName lastName email') // Reverse populate from User collection
+      .exec();
+  
+    return data || [];
   }
+  
 
   async findAvailableBeds() {
     return this.bedModel
@@ -90,19 +114,35 @@ export class BedsService {
     if (!bed) {
       throw new NotFoundException('Bed not found');
     }
-
+  
     if (bed.status === BedStatus.OCCUPIED) {
       throw new BadRequestException('Bed is already occupied');
     }
-
+  
     if (bed.status === BedStatus.MAINTENANCE) {
       throw new BadRequestException('Bed is under maintenance');
     }
-
-    // bed.assignedUser = new MongooseSchema.Types.ObjectId(userId);
+  
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+  
+    await this.userModel.updateOne(
+      { _id: new mongoose.Types.ObjectId(userId) },
+      {
+        $set: {
+          assignedRoom: bed.roomId,
+          assignedBed: bed._id,
+        },
+      }
+    );
+  
+    // Update bed status
     bed.status = BedStatus.OCCUPIED;
     return bed.save();
   }
+  
 
   async unassignUser(bedId: string) {
     const bed = await this.bedModel.findById(bedId);

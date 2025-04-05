@@ -95,9 +95,9 @@ export class PaymentsService {
       throw new NotFoundException('Payment not found');
     }
 
-    payment.status = status;
+    payment[0].status = status;
     if (status === PaymentStatus.COMPLETED) {
-      payment.paymentDate = new Date();
+      payment[0].date = new Date();
     }
 
     return payment.save();
