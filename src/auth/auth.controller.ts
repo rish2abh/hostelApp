@@ -2,16 +2,17 @@ import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Get, Patch, Pa
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+// import { CreateUserDto } from '../users/dto/create-user.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { User } from './decorators/user.decorator';
+import { CreateManagerDto } from 'src/manager/dto/create-manager.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
+  async register(@Body() createUserDto: CreateManagerDto) {
     return this.authService.register(createUserDto);
   }
 

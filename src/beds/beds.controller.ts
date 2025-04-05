@@ -6,8 +6,8 @@ import { CreateBedDto } from './dto/create-bed.dto';
 import { UpdateBedDto } from './dto/update-bed.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserRole } from '../entities/user.entity';
 import { Bed, BedStatus } from '../entities/bed.entity';
+import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Beds')
 // @ApiBearerAuth()
@@ -17,7 +17,7 @@ export class BedsController {
   constructor(private readonly bedsService: BedsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create bed',
     description: 'Create a new bed record. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -116,7 +116,7 @@ export class BedsController {
   }
 
   @Put(':id')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Update bed',
     description: 'Update a bed record. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -145,7 +145,7 @@ export class BedsController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN)
+  @Roles(managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Delete bed',
     description: 'Delete a bed record. Only accessible by SUPER_ADMIN role.'
@@ -218,7 +218,7 @@ export class BedsController {
   }
 
   @Patch(':id/assign')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Assign bed',
     description: 'Assign a bed to a user. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -250,7 +250,7 @@ export class BedsController {
   }
 
   @Patch(':id/unassign')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Unassign bed',
     description: 'Remove user assignment from a bed. Only accessible by ADMIN and SUPER_ADMIN roles.'

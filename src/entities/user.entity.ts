@@ -32,22 +32,22 @@ export class User extends Document {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @ApiProperty({ 
-    example: 'hashedPassword123',
-    description: 'Hashed password of the user',
-    writeOnly: true
-  })
-  @Prop({ required: true })
-  password: string;
+  // @ApiProperty({ 
+  //   example: 'hashedPassword123',
+  //   description: 'Hashed password of the user',
+  //   writeOnly: true
+  // })
+  // @Prop({ required: true })
+  // password: string;
 
-  @ApiProperty({ 
-    enum: UserRole,
-    example: UserRole.USER,
-    description: 'Role of the user in the system',
-    default: UserRole.USER
-  })
-  @Prop({ type: String, enum: UserRole, default: UserRole.USER })
-  role: UserRole;
+  // @ApiProperty({ 
+  //   enum: UserRole,
+  //   example: UserRole.USER,
+  //   description: 'Role of the user in the system',
+  //   default: UserRole.USER
+  // })
+  // @Prop({ type: String, enum: UserRole, default: UserRole.USER })
+  // role: UserRole;
 
   @ApiProperty({ 
     example: true,
@@ -87,6 +87,148 @@ export class User extends Document {
     readOnly: true
   })
   updatedAt: Date;
+
+  // Additional fields
+
+  @ApiProperty({
+    example: [
+      {
+        type: 'Passport',
+        number: '456',
+        expiryDate: '2025-04-09T18:30:00.000Z'
+      }
+    ],
+    description: 'Array of documents associated with the user',
+    isArray: true
+  })
+  @Prop([{ type: String, required: true }])
+  documents: { type: string; number: string; expiryDate: Date }[];
+
+  @ApiProperty({
+    example: {
+      name: 'RAM NN',
+      phoneNumber: '9630793549',
+      relationship: 'Father'
+    },
+    description: 'Parent information of the user',
+  })
+  @Prop({
+    type: {
+      name: String,
+      phoneNumber: String,
+      relationship: String,
+    },
+  })
+  parentInfo: {
+    name: string;
+    phoneNumber: string;
+    relationship: string;
+  };
+
+  @ApiProperty({
+    example: {
+      email: 'BHUSHAN@GMAIL.COM',
+      address: {
+        street: '345',
+        city: '454',
+        state: '54',
+        country: '45',
+        postalCode: '5',
+      },
+      emergencyContact: {
+        name: '45',
+        phoneNumber: '9630793549',
+        relationship: 'Friend',
+      },
+    },
+    description: 'Contact information of the user',
+  })
+  @Prop({
+    type: {
+      email: String,
+      address: {
+        street: String,
+        city: String,
+        state: String,
+        country: String,
+        postalCode: String,
+      },
+      emergencyContact: {
+        name: String,
+        phoneNumber: String,
+        relationship: String,
+      },
+    },
+  })
+  contactInfo: {
+    email: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      country: string;
+      postalCode: string;
+    };
+    emergencyContact: {
+      name: string;
+      phoneNumber: string;
+      relationship: string;
+    };
+  };
+
+  @ApiProperty({
+    example: {
+      occupation: 'Software Developer',
+      company: 'Tech Inc.',
+      designation: 'Senior Developer',
+      workExperience: '5 years',
+      monthlyIncome: 5000,
+      employmentType: 'Full Time',
+    },
+    description: 'Professional information of the user',
+  })
+  @Prop({
+    type: {
+      occupation: String,
+      company: String,
+      designation: String,
+      workExperience: String,
+      monthlyIncome: Number,
+      employmentType: String,
+    },
+  })
+  professionalInfo: {
+    occupation: string;
+    company: string;
+    designation: string;
+    workExperience: string;
+    monthlyIncome: number;
+    employmentType: string;
+  };
+
+  @ApiProperty({
+    example: {
+      dateOfBirth: '2025-04-03T18:30:00.000Z',
+      nationality: 'Indian',
+      preferredLanguage: 'English',
+      specialRequirements: ['Wheelchair access'],
+    },
+    description: 'Additional information about the user',
+  })
+  @Prop({
+    type: {
+      dateOfBirth: Date,
+      nationality: String,
+      preferredLanguage: String,
+      specialRequirements: [String],
+    },
+  })
+  additionalInfo: {
+    dateOfBirth: Date;
+    nationality: string;
+    preferredLanguage: string;
+    specialRequirements: string[];
+  };
 }
 
-export const UserSchema = SchemaFactory.createForClass(User); 
+export const UserSchema = SchemaFactory.createForClass(User);

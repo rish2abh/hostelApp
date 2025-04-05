@@ -7,8 +7,8 @@ import { PaymentStatus } from '../entities/payment.entity';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserRole } from '../entities/user.entity';
 import { Payment } from '../entities/payment.entity';
+import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Payments')
 @ApiBearerAuth()
@@ -18,7 +18,7 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create payment',
     description: 'Create a new payment record. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -117,7 +117,7 @@ export class PaymentsController {
   }
 
   @Put(':id')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Update payment',
     description: 'Update a payment record. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -146,7 +146,7 @@ export class PaymentsController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN)
+  @Roles(managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Delete payment',
     description: 'Delete a payment record. Only accessible by SUPER_ADMIN role.'

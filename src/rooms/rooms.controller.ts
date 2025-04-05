@@ -6,8 +6,8 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserRole } from '../entities/user.entity';
 import { Room } from '../entities/room.entity';
+import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Rooms')
 // @ApiBearerAuth()
@@ -17,7 +17,7 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create a new room',
     description: 'Creates a new room in the system. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -133,7 +133,7 @@ export class RoomsController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Update room',
     description: 'Updates details of a specific room. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -167,7 +167,7 @@ export class RoomsController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Delete room',
     description: 'Deletes a specific room. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -200,7 +200,7 @@ export class RoomsController {
   }
 
   @Patch(':id/assign/:userId')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Assign user to room',
     description: 'Assigns a user to a specific room. Only accessible by ADMIN and SUPER_ADMIN roles.'
@@ -243,7 +243,7 @@ export class RoomsController {
   }
 
   @Patch(':id/unassign')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Unassign user from room',
     description: 'Removes user assignment from a specific room. Only accessible by ADMIN and SUPER_ADMIN roles.'

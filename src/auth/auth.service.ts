@@ -1,21 +1,23 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+// import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthUser } from './interfaces/user.interface';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { ManagerService } from 'src/manager/manager.service';
+import { CreateManagerDto } from 'src/manager/dto/create-manager.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private managerService: ManagerService,
     private jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<AuthUser | null> {
-    const user = await this.usersService.findByEmail(email);
+    const user = await this.managerService.findByEmail(email);
     if (user && await bcrypt.compare(password, user.password)) {
       const { password, ...result } = user.toObject();
       return {
@@ -43,8 +45,8 @@ export class AuthService {
     };
   }
 
-  async register(createUserDto: CreateUserDto) {
-    const user = await this.usersService.create(createUserDto);
+  async register(createManagerDto: CreateManagerDto) {
+    const user = await this.managerService.create(createManagerDto);
     const { password, ...result } = user.toObject();
     const authUser: AuthUser = {
       ...result,
@@ -54,11 +56,11 @@ export class AuthService {
   }
 
   async changePassword(userId: string, oldPassword: string, newPassword: string) {
-    const isValid = await this.usersService.validatePassword(userId, oldPassword);
+    const isValid = await this.managerService.validatePassword(userId, oldPassword);
     if (!isValid) {
       throw new UnauthorizedException('Invalid old password');
     }
-    await this.usersService.changePassword(userId, oldPassword, newPassword);
+    await this.managerService.changePassword(userId, oldPassword, newPassword);
     return { message: 'Password changed successfully' };
   }
 }

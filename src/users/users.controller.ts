@@ -81,12 +81,12 @@ export class UsersController {
     return this.usersService.toggleActiveStatus(id);
   }
 
-  @Post(':id/change-password')
-  changePassword(
-    @Param('id') id: string,
-    @Body('oldPassword') oldPassword: string,
-    @Body('newPassword') newPassword: string,
-  ) {
-    return this.usersService.changePassword(id, oldPassword, newPassword);
-  }
+  // @Post(':id/change-password')
+  // changePassword(
+  //   @Param('id') id: string,
+  //   @Body('oldPassword') oldPassword: string,
+  //   @Body('newPassword') newPassword: string,
+  // ) {
+  //   return this.usersService.changePassword(id, oldPassword, newPassword);
+  // }
 }

@@ -18,10 +18,10 @@ export class UsersService {
       throw new ConflictException('Email already exists');
     }
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    // const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const createdUser = new this.userModel({
       ...createUserDto,
-      password: hashedPassword,
+      // password: hashedPassword,
     });
 
     return createdUser.save();
@@ -48,23 +48,23 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    if (updateUserDto.email) {
-      const existingUser = await this.userModel.findOne({
-        email: updateUserDto.email,
-        _id: { $ne: id },
-      });
-      if (existingUser) {
-        throw new ConflictException('Email already exists');
-      }
-    }
+    // if (updateUserDto.email) {
+    //   const existingUser = await this.userModel.findOne({
+    //     email: updateUserDto.email,
+    //     _id: { $ne: id },
+    //   });
+    //   if (existingUser) {
+    //     throw new ConflictException('Email already exists');
+    //   }
+    // }
 
-    if (updateUserDto.password) {
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
-    }
+    // if (updateUserDto.password) {
+    //   updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    // }
 
     const updatedUser = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
-      .select('-password')
+      // .select('-password')
       .exec();
 
     if (!updatedUser) {
@@ -83,9 +83,9 @@ export class UsersService {
 
   async findUsersByRole(role: UserRole, currentUser: User) {
     // Only super admin and admin can filter users by role
-    if (currentUser.role !== UserRole.SUPER_ADMIN && currentUser.role !== UserRole.ADMIN) {
-      throw new ForbiddenException('You do not have permission to filter users by role');
-    }
+    // if (currentUser.role !== UserRole.SUPER_ADMIN && currentUser.role !== UserRole.ADMIN) {
+    //   throw new ForbiddenException('You do not have permission to filter users by role');
+    // }
 
     return this.userModel.find({ role }).select('-password');
   }
@@ -131,7 +131,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    user.role = role;
+    // user.role = role;
     await user.save();
 
     const updatedUser = await this.userModel.findById(userId).select('-password').exec();
@@ -157,22 +157,22 @@ export class UsersService {
     return updatedUser;
   }
 
-  async validatePassword(userId: string, password: string): Promise<boolean> {
-    const user = await this.userModel.findById(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  // async validatePassword(userId: string, password: string): Promise<boolean> {
+  //   const user = await this.userModel.findById(userId);
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
 
-    return bcrypt.compare(password, user.password);
-  }
+  //   return bcrypt.compare(password, user.password);
+  // }
 
-  async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<void> {
-    const isValid = await this.validatePassword(userId, oldPassword);
-    if (!isValid) {
-      throw new BadRequestException('Invalid old password');
-    }
+  // async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<void> {
+  //   const isValid = await this.validatePassword(userId, oldPassword);
+  //   if (!isValid) {
+  //     throw new BadRequestException('Invalid old password');
+  //   }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userModel.findByIdAndUpdate(userId, { password: hashedPassword }).exec();
-  }
+  //   const hashedPassword = await bcrypt.hash(newPassword, 10);
+  //   await this.userModel.findByIdAndUpdate(userId, { password: hashedPassword }).exec();
+  // }
 }
