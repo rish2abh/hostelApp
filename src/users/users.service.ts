@@ -1,15 +1,17 @@
 import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongooseSchema } from 'mongoose';
+import mongoose, { Model, Schema as MongooseSchema } from 'mongoose';
 import { User, UserRole } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Bed, BedStatus } from 'src/entities/bed.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Bed.name) private bedModel: Model<Bed>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -21,9 +23,10 @@ export class UsersService {
         ]
       });
   
-      if (existingUser)  throw new ConflictException('Email or phone number already exists');
+       if (existingUser)  throw new ConflictException('Email or phone number already exists');
   
       const data = await this.userModel.create(createUserDto)
+      await this.bedModel.updateOne({_id:new mongoose.Types.ObjectId(createUserDto.assignedBed)}, {status : BedStatus.OCCUPIED})
   
       if (!data) throw new InternalServerErrorException('User not created');
 

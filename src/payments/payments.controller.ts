@@ -11,14 +11,14 @@ import { Payment } from '../entities/payment.entity';
 import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Payments')
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @Controller('payments')
-// @UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post("create")
-  // @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create payment',
     description: 'Create a new payment record. Only accessible by ADMIN and SUPER_ADMIN roles.'

@@ -10,9 +10,9 @@ import { Bed, BedStatus } from '../entities/bed.entity';
 import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Beds')
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @Controller('beds')
-// @UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class BedsController {
   constructor(private readonly bedsService: BedsService) {}
 

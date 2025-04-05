@@ -10,14 +10,14 @@ import { Room } from '../entities/room.entity';
 import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Rooms')
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @Controller('rooms')
-// @UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post("create")
-  // @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
+  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create a new room',
     description: 'Creates a new room in the system. Only accessible by ADMIN and SUPER_ADMIN roles.'

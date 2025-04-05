@@ -5,22 +5,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserRole } from '../entities/user.entity';
 import { User } from '../auth/decorators/user.decorator';
+import { managerRole } from 'src/entities/managers.entity';
 
 @Controller('users')
-// @UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   findAll() {
     return this.usersService.findAll();
   }
@@ -31,25 +31,25 @@ export class UsersController {
   }
 
   @Get(':id')
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  // @Roles(UserRole.SUPER_ADMIN)
+  @Roles(managerRole.SUPER_ADMIN)
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
 
   @Post(':id/rooms/:roomId')
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   assignRoom(
     @Param('id') id: string,
     @Param('roomId') roomId: string,
@@ -58,7 +58,7 @@ export class UsersController {
   }
 
   @Delete(':id/rooms/:roomId')
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   removeRoomAssignment(
     @Param('id') id: string,
     @Param('roomId') roomId: string,
@@ -66,17 +66,17 @@ export class UsersController {
     return this.usersService.removeRoomAssignment(id, roomId);
   }
 
-  @Patch(':id/role')
-  // @Roles(UserRole.SUPER_ADMIN)
-  updateRole(
-    @Param('id') id: string,
-    @Body('role') role: UserRole,
-  ) {
-    return this.usersService.updateRole(id, role);
-  }
+  // @Patch(':id/role')
+  // // @Roles(managerRole.SUPER_ADMIN)
+  // updateRole(
+  //   @Param('id') id: string,
+  //   @Body('role') role: managerRole,
+  // ) {
+  //   return this.usersService.updateRole(id, role);
+  // }
 
   @Patch(':id/toggle-active')
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   toggleActiveStatus(@Param('id') id: string) {
     return this.usersService.toggleActiveStatus(id);
   }

@@ -10,13 +10,13 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 
 @Controller('manager')
-// @UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 
 export class ManagerController {
   constructor(private readonly managerService: ManagerService) {}
 
   @Post("create")
-  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   create(@Body() createManagerDto: CreateManagerDto) {
     return this.managerService.create(createManagerDto);
   }
@@ -28,7 +28,7 @@ export class ManagerController {
   }
 
   @Get("list")
-  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   findAll() {
     return this.managerService.findAll();
   }
@@ -39,19 +39,19 @@ export class ManagerController {
   }
 
   @Get(':id')
-  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   findOne(@Param('id') id: string) {
     return this.managerService.findOne(id);
   }
 
   @Patch(':id')
-  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   update(@Param('id') id: string, @Body() updateManagerDto: UpdateManagerDto) {
     return this.managerService.update(id, updateManagerDto);
   }
 
   @Delete(':id')
-  // @Roles(managerRole.SUPER_ADMIN)
+  @Roles(managerRole.SUPER_ADMIN)
   remove(@Param('id') id: string) {
     return this.managerService.remove(id);
   }
@@ -75,7 +75,7 @@ export class ManagerController {
   // }
 
   @Patch(':id/role')
-  // @Roles(managerRole.SUPER_ADMIN)
+  @Roles(managerRole.SUPER_ADMIN)
   updateRole(
     @Param('id') id: string,
     @Body('role') role: managerRole,
@@ -84,7 +84,7 @@ export class ManagerController {
   }
 
   @Patch(':id/toggle-active')
-  // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
+  @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   toggleActiveStatus(@Param('id') id: string) {
     return this.managerService.toggleActiveStatus(id);
   }
