@@ -10,7 +10,7 @@ export enum PaymentStatus {
 }
 
 @Schema()
-export class Payment {
+export class Collection {
   @ApiProperty({ example: 'Rent', description: 'Type of the payment' })
   @Prop({ required: true })
   type: string;
@@ -20,13 +20,13 @@ export class Payment {
   amount: number;
 }
 
-export const PaymentSchema = SchemaFactory.createForClass(Payment);
+export const CollectionSchema = SchemaFactory.createForClass(Collection);
 
 @Schema({ timestamps: true, collection: 'payment' }) // 👈 Ensures MongoDB collection name is "payment"
-export class Collection extends Document {
-  @ApiProperty({ type: [Payment] })
-  @Prop({ type: [PaymentSchema], required: true })
-  collectionItems: Payment[];
+export class Payment extends Document {
+  @ApiProperty({ type: [Collection] })
+  @Prop({ type: [CollectionSchema], required: true })
+  collectionItems: Collection[];
 
   @ApiProperty({ example: 'UPI / Cash / Card' })
   @Prop({ required: true })
@@ -72,6 +72,7 @@ export class Collection extends Document {
   @Prop()
   notes?: string;
 
+
   @ApiProperty({ readOnly: true })
   createdAt: Date;
 
@@ -79,4 +80,4 @@ export class Collection extends Document {
   updatedAt: Date;
 }
 
-export const CollectionSchema = SchemaFactory.createForClass(Collection);
+export const PaymentSchema = SchemaFactory.createForClass(Payment);

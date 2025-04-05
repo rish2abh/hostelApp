@@ -17,7 +17,7 @@ import { managerRole } from 'src/entities/managers.entity';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @Post()
+  @Post("create")
   // @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create payment',
@@ -44,7 +44,7 @@ export class PaymentsController {
     return this.paymentsService.create(createPaymentDto);
   }
 
-  @Get()
+  @Get("list")
   @ApiOperation({ 
     summary: 'Get all payments',
     description: 'Retrieve all payments with optional filtering and pagination.'

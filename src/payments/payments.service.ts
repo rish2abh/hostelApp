@@ -20,8 +20,15 @@ export class PaymentsService {
   ) {}
 
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
-    const createdPayment = new this.paymentModel(createPaymentDto);
-    return createdPayment.save();
+    try {
+
+      const createdPayment = new this.paymentModel(createPaymentDto)    
+      return createdPayment.save();
+  } catch (error) {
+      console.log(error.message);
+      throw error
+      
+  }
   }
 
   async findAll(params: FindAllParams): Promise<{ data: Payment[]; total: number; page: number; limit: number }> {
@@ -34,14 +41,21 @@ export class PaymentsService {
 
     const skip = (page - 1) * limit;
     
-    const [data, total] = await Promise.all([
+    const [rawData, total] = await Promise.all([
       this.paymentModel
         .find(query)
         .skip(skip)
         .limit(limit)
+        .lean()
         .exec(),
       this.paymentModel.countDocuments(query),
     ]);
+  
+    // Add `totalCollection` for each record
+    const data = rawData.map(payment => {
+      const totalCollection = payment.collectionItems?.reduce((sum, item) => sum + (item.amount || 0), 0) || 0;
+      return { ...payment, totalCollection };
+    });
 
     return {
       data,

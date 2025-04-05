@@ -12,6 +12,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { BedsModule } from './beds/beds.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ManagerModule } from './manager/manager.module';
+import { ExpenseModule } from './expense/expense.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ManagerModule } from './manager/manager.module';
     BedsModule,
     PaymentsModule,
     ManagerModule,
+    ExpenseModule,
   ],
   controllers: [],
   providers: [],
