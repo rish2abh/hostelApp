@@ -1,0 +1,371 @@
+{
+  "info": {
+    "name": "Reports & Analytics",
+    "description": "Collection for testing reports and analytics endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Occupancy Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/occupancy?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "occupancy"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get occupancy statistics and trends"
+      }
+    },
+    {
+      "name": "Get Revenue Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/revenue?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "revenue"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get revenue statistics and trends"
+      }
+    },
+    {
+      "name": "Get Expense Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/expenses?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "expenses"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get expense statistics and trends"
+      }
+    },
+    {
+      "name": "Get Maintenance Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/maintenance?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "maintenance"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get maintenance statistics and trends"
+      }
+    },
+    {
+      "name": "Get Payment Collection Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/payments?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "payments"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get payment collection statistics and trends"
+      }
+    },
+    {
+      "name": "Get Room Utilization Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/room-utilization?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "room-utilization"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get room utilization statistics and trends"
+      }
+    },
+    {
+      "name": "Get Student Attendance Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/attendance?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "attendance"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get student attendance statistics and trends"
+      }
+    },
+    {
+      "name": "Get Financial Summary Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/financial-summary?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "financial-summary"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            }
+          ]
+        },
+        "description": "Get comprehensive financial summary"
+      }
+    },
+    {
+      "name": "Get Custom Report",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"reportType\": \"CUSTOM\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-03-31\",\n    \"metrics\": [\n        \"OCCUPANCY\",\n        \"REVENUE\",\n        \"EXPENSES\"\n    ],\n    \"groupBy\": \"MONTHLY\",\n    \"filters\": {\n        \"roomTypes\": [\"SINGLE\", \"DOUBLE\"],\n        \"paymentStatus\": \"PAID\"\n    }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/reports/custom",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "custom"]
+        },
+        "description": "Generate a custom report based on specified parameters"
+      }
+    },
+    {
+      "name": "Export Report",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/export?reportType=OCCUPANCY&startDate=2024-01-01&endDate=2024-03-31&format=PDF",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "export"],
+          "query": [
+            {
+              "key": "reportType",
+              "value": "OCCUPANCY",
+              "description": "Type of report to export"
+            },
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for the report"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for the report"
+            },
+            {
+              "key": "format",
+              "value": "PDF",
+              "description": "Export format (PDF, EXCEL, CSV)"
+            }
+          ]
+        },
+        "description": "Export report in specified format"
+      }
+    },
+    {
+      "name": "Get Report Templates",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/reports/templates",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "templates"]
+        },
+        "description": "Get available report templates"
+      }
+    },
+    {
+      "name": "Save Report Template",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Monthly Financial Report\",\n    \"description\": \"Monthly financial summary report\",\n    \"reportType\": \"CUSTOM\",\n    \"metrics\": [\n        \"REVENUE\",\n        \"EXPENSES\",\n        \"PROFIT\"\n    ],\n    \"groupBy\": \"MONTHLY\",\n    \"filters\": {\n        \"paymentStatus\": \"PAID\"\n    }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/reports/templates",
+          "host": ["{{baseUrl}}"],
+          "path": ["reports", "templates"]
+        },
+        "description": "Save a new report template"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "your_access_token_here",
+      "type": "string"
+    }
+  ]
+} 

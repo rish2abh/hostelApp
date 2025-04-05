@@ -1,0 +1,257 @@
+{
+  "info": {
+    "name": "Expense Management",
+    "description": "Collection for testing expense management and analytics endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Expense",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Electricity Bill\",\n    \"description\": \"Monthly electricity bill for common areas\",\n    \"amount\": 1500.50,\n    \"category\": \"UTILITIES\",\n    \"date\": \"2024-03-15\",\n    \"paymentStatus\": \"PENDING\",\n    \"dueDate\": \"2024-03-30\",\n    \"attachments\": [\n        \"receipt.pdf\"\n    ],\n    \"tags\": [\n        \"monthly\",\n        \"utilities\"\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/expenses",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses"]
+        },
+        "description": "Create a new expense"
+      }
+    },
+    {
+      "name": "Get All Expenses",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses"]
+        },
+        "description": "Get all expenses"
+      }
+    },
+    {
+      "name": "Get Expense by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "expense_id_here",
+              "description": "Expense ID"
+            }
+          ]
+        },
+        "description": "Get a specific expense by ID"
+      }
+    },
+    {
+      "name": "Update Expense",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Updated Electricity Bill\",\n    \"amount\": 1600.75,\n    \"paymentStatus\": \"PAID\",\n    \"tags\": [\n        \"monthly\",\n        \"utilities\",\n        \"updated\"\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/expenses/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "expense_id_here",
+              "description": "Expense ID"
+            }
+          ]
+        },
+        "description": "Update an expense"
+      }
+    },
+    {
+      "name": "Delete Expense",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "expense_id_here",
+              "description": "Expense ID"
+            }
+          ]
+        },
+        "description": "Delete an expense"
+      }
+    },
+    {
+      "name": "Get Expense Summary",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/summary",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", "summary"]
+        },
+        "description": "Get expense summary including total, average, and category breakdown"
+      }
+    },
+    {
+      "name": "Get Expense Trend",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/trend?interval=monthly&startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", "trend"],
+          "query": [
+            {
+              "key": "interval",
+              "value": "monthly",
+              "description": "Time interval for trend analysis (daily, weekly, monthly, yearly)"
+            },
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date for trend analysis"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date for trend analysis"
+            }
+          ]
+        },
+        "description": "Get expense trends over time"
+      }
+    },
+    {
+      "name": "Get Expense Forecast",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/forecast?months=3",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", "forecast"],
+          "query": [
+            {
+              "key": "months",
+              "value": "3",
+              "description": "Number of months to forecast"
+            }
+          ]
+        },
+        "description": "Get expense forecast for future months"
+      }
+    },
+    {
+      "name": "Get Expenses by Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/category/:category",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", "category", ":category"],
+          "variable": [
+            {
+              "key": "category",
+              "value": "UTILITIES",
+              "description": "Expense category"
+            }
+          ]
+        },
+        "description": "Get all expenses for a specific category"
+      }
+    },
+    {
+      "name": "Get Expenses by Date Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses/date-range?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", "date-range"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date"
+            }
+          ]
+        },
+        "description": "Get expenses within a specific date range"
+      }
+    },
+    {
+      "name": "Update Payment Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"paymentStatus\": \"PAID\",\n    \"paymentDate\": \"2024-03-20\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/expenses/:id/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["expenses", ":id", "payment-status"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "expense_id_here",
+              "description": "Expense ID"
+            }
+          ]
+        },
+        "description": "Update payment status of an expense"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ]
+} 

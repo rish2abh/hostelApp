@@ -1,0 +1,280 @@
+{
+  "info": {
+    "name": "Maintenance Management",
+    "description": "Collection for testing maintenance management endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Maintenance Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"roomId\": \"room_id_here\",\n    \"title\": \"AC Repair Required\",\n    \"description\": \"AC not cooling properly\",\n    \"priority\": \"HIGH\",\n    \"status\": \"PENDING\",\n    \"reportedBy\": \"user_id_here\",\n    \"assignedTo\": \"maintenance_staff_id_here\",\n    \"dueDate\": \"2024-03-20\",\n    \"attachments\": [\n        \"ac_issue.jpg\"\n    ],\n    \"notes\": \"Please check refrigerant levels\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/maintenance",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance"]
+        },
+        "description": "Create a new maintenance request"
+      }
+    },
+    {
+      "name": "Get All Maintenance Requests",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance"]
+        },
+        "description": "Get all maintenance requests"
+      }
+    },
+    {
+      "name": "Get Maintenance Request by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "maintenance_id_here",
+              "description": "Maintenance Request ID"
+            }
+          ]
+        },
+        "description": "Get a specific maintenance request by ID"
+      }
+    },
+    {
+      "name": "Update Maintenance Request",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"IN_PROGRESS\",\n    \"assignedTo\": \"maintenance_staff_id_here\",\n    \"notes\": \"Technician assigned and will visit tomorrow\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "maintenance_id_here",
+              "description": "Maintenance Request ID"
+            }
+          ]
+        },
+        "description": "Update maintenance request details"
+      }
+    },
+    {
+      "name": "Delete Maintenance Request",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "maintenance_id_here",
+              "description": "Maintenance Request ID"
+            }
+          ]
+        },
+        "description": "Delete a maintenance request"
+      }
+    },
+    {
+      "name": "Get Room Maintenance History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/room/:roomId",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", "room", ":roomId"],
+          "variable": [
+            {
+              "key": "roomId",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Get maintenance history for a specific room"
+      }
+    },
+    {
+      "name": "Get Maintenance Requests by Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/status/:status",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", "status", ":status"],
+          "variable": [
+            {
+              "key": "status",
+              "value": "PENDING",
+              "description": "Maintenance status (PENDING, IN_PROGRESS, COMPLETED, CANCELLED)"
+            }
+          ]
+        },
+        "description": "Get maintenance requests by status"
+      }
+    },
+    {
+      "name": "Get Maintenance Requests by Priority",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/priority/:priority",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", "priority", ":priority"],
+          "variable": [
+            {
+              "key": "priority",
+              "value": "HIGH",
+              "description": "Maintenance priority (LOW, MEDIUM, HIGH, URGENT)"
+            }
+          ]
+        },
+        "description": "Get maintenance requests by priority"
+      }
+    },
+    {
+      "name": "Get Maintenance Requests by Date Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/date-range?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", "date-range"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date"
+            }
+          ]
+        },
+        "description": "Get maintenance requests within a specific date range"
+      }
+    },
+    {
+      "name": "Get Maintenance Analytics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/analytics",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", "analytics"]
+        },
+        "description": "Get maintenance analytics and statistics"
+      }
+    },
+    {
+      "name": "Get Maintenance Summary",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/summary",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", "summary"]
+        },
+        "description": "Get maintenance summary including status breakdowns"
+      }
+    },
+    {
+      "name": "Add Maintenance Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"comment\": \"Technician visited and diagnosed the issue\",\n    \"userId\": \"maintenance_staff_id_here\",\n    \"attachments\": [\n        \"diagnosis_report.pdf\"\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/:id/comments",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", ":id", "comments"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "maintenance_id_here",
+              "description": "Maintenance Request ID"
+            }
+          ]
+        },
+        "description": "Add a comment to a maintenance request"
+      }
+    },
+    {
+      "name": "Get Maintenance Comments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/maintenance/:id/comments",
+          "host": ["{{baseUrl}}"],
+          "path": ["maintenance", ":id", "comments"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "maintenance_id_here",
+              "description": "Maintenance Request ID"
+            }
+          ]
+        },
+        "description": "Get all comments for a maintenance request"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ]
+} 

@@ -1,0 +1,273 @@
+{
+  "info": {
+    "name": "Notifications",
+    "description": "Collection for testing notification endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get User Notifications",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications?page=1&limit=10&read=false",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number for pagination"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Number of notifications per page"
+            },
+            {
+              "key": "read",
+              "value": "false",
+              "description": "Filter by read status"
+            }
+          ]
+        },
+        "description": "Get notifications for the authenticated user"
+      }
+    },
+    {
+      "name": "Get Notification by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "notification_id",
+              "description": "ID of the notification"
+            }
+          ]
+        },
+        "description": "Get a specific notification by ID"
+      }
+    },
+    {
+      "name": "Mark Notification as Read",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/:id/read",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", ":id", "read"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "notification_id",
+              "description": "ID of the notification"
+            }
+          ]
+        },
+        "description": "Mark a notification as read"
+      }
+    },
+    {
+      "name": "Mark All Notifications as Read",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/mark-all-read",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "mark-all-read"]
+        },
+        "description": "Mark all notifications as read for the authenticated user"
+      }
+    },
+    {
+      "name": "Delete Notification",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "notification_id",
+              "description": "ID of the notification"
+            }
+          ]
+        },
+        "description": "Delete a specific notification"
+      }
+    },
+    {
+      "name": "Delete All Notifications",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/delete-all",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "delete-all"]
+        },
+        "description": "Delete all notifications for the authenticated user"
+      }
+    },
+    {
+      "name": "Get Unread Count",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/unread-count",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "unread-count"]
+        },
+        "description": "Get count of unread notifications"
+      }
+    },
+    {
+      "name": "Send Notification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Payment Due Reminder\",\n    \"message\": \"Your monthly rent payment is due in 3 days\",\n    \"type\": \"PAYMENT_REMINDER\",\n    \"priority\": \"HIGH\",\n    \"recipients\": [\"user_id_1\", \"user_id_2\"],\n    \"data\": {\n        \"paymentId\": \"payment_123\",\n        \"dueDate\": \"2024-04-01\",\n        \"amount\": 5000\n    }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/notifications/send",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "send"]
+        },
+        "description": "Send a new notification to specified recipients"
+      }
+    },
+    {
+      "name": "Get Notification Types",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/types",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "types"]
+        },
+        "description": "Get available notification types"
+      }
+    },
+    {
+      "name": "Update Notification Preferences",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"preferences\": {\n        \"PAYMENT_REMINDER\": {\n            \"email\": true,\n            \"push\": true,\n            \"sms\": false\n        },\n        \"MAINTENANCE_UPDATE\": {\n            \"email\": true,\n            \"push\": true,\n            \"sms\": true\n        }\n    }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/notifications/preferences",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "preferences"]
+        },
+        "description": "Update user's notification preferences"
+      }
+    },
+    {
+      "name": "Get Notification Preferences",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/notifications/preferences",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications", "preferences"]
+        },
+        "description": "Get user's notification preferences"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "your_access_token_here",
+      "type": "string"
+    }
+  ]
+} 

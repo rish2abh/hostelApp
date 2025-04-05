@@ -1,0 +1,251 @@
+{
+  "info": {
+    "name": "Payment Management",
+    "description": "Collection for testing payment management endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userId\": \"user_id_here\",\n    \"roomId\": \"room_id_here\",\n    \"amount\": 5000,\n    \"type\": \"RENT\",\n    \"paymentMethod\": \"CASH\",\n    \"paymentDate\": \"2024-03-15\",\n    \"dueDate\": \"2024-03-30\",\n    \"status\": \"PAID\",\n    \"description\": \"Monthly rent payment\",\n    \"referenceNumber\": \"RENT-2024-03\",\n    \"attachments\": [\n        \"receipt.pdf\"\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/payments",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments"]
+        },
+        "description": "Create a new payment"
+      }
+    },
+    {
+      "name": "Get All Payments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments"]
+        },
+        "description": "Get all payments"
+      }
+    },
+    {
+      "name": "Get Payment by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "payment_id_here",
+              "description": "Payment ID"
+            }
+          ]
+        },
+        "description": "Get a specific payment by ID"
+      }
+    },
+    {
+      "name": "Update Payment",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"PAID\",\n    \"paymentDate\": \"2024-03-16\",\n    \"description\": \"Updated payment information\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/payments/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "payment_id_here",
+              "description": "Payment ID"
+            }
+          ]
+        },
+        "description": "Update payment details"
+      }
+    },
+    {
+      "name": "Delete Payment",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "payment_id_here",
+              "description": "Payment ID"
+            }
+          ]
+        },
+        "description": "Delete a payment"
+      }
+    },
+    {
+      "name": "Get User Payments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/user/:userId",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "user", ":userId"],
+          "variable": [
+            {
+              "key": "userId",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Get all payments for a specific user"
+      }
+    },
+    {
+      "name": "Get Room Payments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/room/:roomId",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "room", ":roomId"],
+          "variable": [
+            {
+              "key": "roomId",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Get all payments for a specific room"
+      }
+    },
+    {
+      "name": "Get Payments by Date Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/date-range?startDate=2024-01-01&endDate=2024-03-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "date-range"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01",
+              "description": "Start date"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-03-31",
+              "description": "End date"
+            }
+          ]
+        },
+        "description": "Get payments within a specific date range"
+      }
+    },
+    {
+      "name": "Get Payments by Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/status/:status",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "status", ":status"],
+          "variable": [
+            {
+              "key": "status",
+              "value": "PAID",
+              "description": "Payment status (PENDING, PAID, OVERDUE, CANCELLED)"
+            }
+          ]
+        },
+        "description": "Get payments by status"
+      }
+    },
+    {
+      "name": "Get Payment Analytics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/analytics",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "analytics"]
+        },
+        "description": "Get payment analytics and statistics"
+      }
+    },
+    {
+      "name": "Get Payment Summary",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/summary",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "summary"]
+        },
+        "description": "Get payment summary including totals and breakdowns"
+      }
+    },
+    {
+      "name": "Generate Payment Receipt",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/:id/receipt",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", ":id", "receipt"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "payment_id_here",
+              "description": "Payment ID"
+            }
+          ]
+        },
+        "description": "Generate a receipt for a specific payment"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ]
+} 

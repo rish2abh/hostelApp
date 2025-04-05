@@ -1,0 +1,255 @@
+{
+  "info": {
+    "name": "Room Management",
+    "description": "Collection for testing room management endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Room",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"roomNumber\": \"101\",\n    \"floor\": 1,\n    \"type\": \"SINGLE\",\n    \"capacity\": 1,\n    \"price\": 5000,\n    \"amenities\": [\n        \"AC\",\n        \"WIFI\",\n        \"ATTACHED_BATHROOM\"\n    ],\n    \"status\": \"AVAILABLE\",\n    \"description\": \"Single room with attached bathroom\",\n    \"maintenanceNotes\": \"Recently renovated\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms"]
+        },
+        "description": "Create a new room"
+      }
+    },
+    {
+      "name": "Get All Rooms",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms"]
+        },
+        "description": "Get all rooms"
+      }
+    },
+    {
+      "name": "Get Room by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Get a specific room by ID"
+      }
+    },
+    {
+      "name": "Update Room",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"price\": 5500,\n    \"amenities\": [\n        \"AC\",\n        \"WIFI\",\n        \"ATTACHED_BATHROOM\",\n        \"TV\"\n    ],\n    \"maintenanceNotes\": \"Added new TV\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Update room details"
+      }
+    },
+    {
+      "name": "Delete Room",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Delete a room"
+      }
+    },
+    {
+      "name": "Get Available Rooms",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/available",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "available"]
+        },
+        "description": "Get all available rooms"
+      }
+    },
+    {
+      "name": "Get Rooms by Type",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/type/:type",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "type", ":type"],
+          "variable": [
+            {
+              "key": "type",
+              "value": "SINGLE",
+              "description": "Room type (SINGLE, DOUBLE, TRIPLE, QUAD)"
+            }
+          ]
+        },
+        "description": "Get all rooms of a specific type"
+      }
+    },
+    {
+      "name": "Get Rooms by Floor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/floor/:floor",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "floor", ":floor"],
+          "variable": [
+            {
+              "key": "floor",
+              "value": "1",
+              "description": "Floor number"
+            }
+          ]
+        },
+        "description": "Get all rooms on a specific floor"
+      }
+    },
+    {
+      "name": "Update Room Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"OCCUPIED\",\n    \"notes\": \"Room assigned to new tenant\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms/:id/status",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", ":id", "status"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Update room status (AVAILABLE, OCCUPIED, MAINTENANCE)"
+      }
+    },
+    {
+      "name": "Get Room Occupancy History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/:id/occupancy-history",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", ":id", "occupancy-history"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Get occupancy history for a specific room"
+      }
+    },
+    {
+      "name": "Get Room Maintenance History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/:id/maintenance-history",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", ":id", "maintenance-history"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Get maintenance history for a specific room"
+      }
+    },
+    {
+      "name": "Get Room Analytics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/analytics",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "analytics"]
+        },
+        "description": "Get room occupancy and revenue analytics"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ]
+} 

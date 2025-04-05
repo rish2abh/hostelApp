@@ -1,0 +1,223 @@
+{
+  "info": {
+    "name": "User Management",
+    "description": "Collection for testing user management endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"USER\",\n    \"phoneNumber\": \"+1234567890\",\n    \"isActive\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        },
+        "description": "Create a new user"
+      }
+    },
+    {
+      "name": "Get All Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        },
+        "description": "Get all users"
+      }
+    },
+    {
+      "name": "Get User by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Get a specific user by ID"
+      }
+    },
+    {
+      "name": "Update User",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"John Updated\",\n    \"lastName\": \"Doe Updated\",\n    \"email\": \"john.updated@example.com\",\n    \"phoneNumber\": \"+1987654321\",\n    \"isActive\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Update a user's information"
+      }
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Delete a user"
+      }
+    },
+    {
+      "name": "Toggle User Status",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id/toggle-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id", "toggle-status"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Toggle user's active status"
+      }
+    },
+    {
+      "name": "Change User Password",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"oldPassword\": \"current_password\",\n    \"newPassword\": \"new_password123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/:id/change-password",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id", "change-password"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Change user's password"
+      }
+    },
+    {
+      "name": "Assign Room to User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"roomId\": \"room_id_here\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/:id/assign-room",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id", "assign-room"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            }
+          ]
+        },
+        "description": "Assign a room to a user"
+      }
+    },
+    {
+      "name": "Remove Room Assignment",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id/remove-room/:roomId",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id", "remove-room", ":roomId"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "user_id_here",
+              "description": "User ID"
+            },
+            {
+              "key": "roomId",
+              "value": "room_id_here",
+              "description": "Room ID"
+            }
+          ]
+        },
+        "description": "Remove room assignment from a user"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ]
+} 
