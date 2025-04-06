@@ -22,7 +22,39 @@ export class ExpenseService {
   }
 
   findAll() {
-    const data = this.expnseModel.find()
+    const data = this.expnseModel.aggregate([
+      {
+        $lookup: {
+          from: 'managers',
+          localField: 'paidby',
+          foreignField: '_id',
+          as: 'paidByInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$paidByInfo',
+          preserveNullAndEmptyArrays: true // Optional: if you want to keep expenses even if manager not found
+        }
+      },
+      {
+        $addFields: {
+          paidByName: {
+            $concat: [
+              { $ifNull: ['$paidByInfo.firstName', ''] },
+              ' ',
+              { $ifNull: ['$paidByInfo.lastName', ''] }
+            ]
+          }
+        }
+      },
+      {
+        $project: {
+          paidByInfo: 0 // Exclude full manager object if not needed
+        }
+      }
+    ]);
+    
     return data 
   }
 

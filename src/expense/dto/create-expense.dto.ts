@@ -51,15 +51,10 @@ import { ExpenseCategory, ExpenseStatus } from 'src/entities/expense.entity';
     @IsString()
     notes?: string;
   
-    @ApiProperty({
-      example: ['file1.pdf', 'file2.jpg'],
-      description: 'Array of attachment file paths or URLs',
-      required: false
-    })
+    @ApiProperty({ example: '660ff450f5eeb88e8b5ea3e2', description: 'User ID who collected the payment' })
+    @IsMongoId()
     @IsOptional()
-    @IsArray()
-    @IsString({ each: true })
-    attachments?: string[];
+    paidby: string;
   
     @ApiProperty({ enum: ExpenseStatus, default: ExpenseStatus.PENDING, description: 'Status of the expense' })
     @IsOptional()

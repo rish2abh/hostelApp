@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
+import { managerRole } from './managers.entity';
 
 export enum ExpenseCategory {
   MAINTENANCE = 'MAINTENANCE',
@@ -9,7 +10,8 @@ export enum ExpenseCategory {
   REPAIRS = 'REPAIRS',
   CLEANING = 'CLEANING',
   SECURITY = 'SECURITY',
-  OTHER = 'OTHER'
+  OTHER = 'OTHER',
+  RENT = 'RENT'
 }
 
 export enum ExpenseStatus {
@@ -53,9 +55,9 @@ export class Expense extends Document {
   @Prop()
   notes?: string;
 
-  @ApiProperty({ example: ['file1.pdf', 'file2.jpg'], description: 'Array of attachment paths or URLs' })
-  @Prop({ type: [String], default: [] })
-  attachments?: string[];
+  @ApiProperty({ type: String, example: '507f1f77bcf86cd799439013' })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Managar', required: false })
+  paidby: Types.ObjectId;
 
   @ApiProperty({ enum: ExpenseStatus, default: ExpenseStatus.PENDING })
   @Prop({ type: String, enum: ExpenseStatus, default: ExpenseStatus.PENDING })

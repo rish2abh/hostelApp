@@ -42,14 +42,66 @@ export class PaymentsService {
     const skip = (page - 1) * limit;
     
     const [rawData, total] = await Promise.all([
-      this.paymentModel
-        .find(query)
-        .skip(skip)
-        .limit(limit)
-        .lean()
-        .exec(),
+      this.paymentModel.aggregate([
+        { $match: query },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'collectedFrom',
+            foreignField: '_id',
+            as: 'collectedFromUser',
+          },
+        },
+        {
+          $unwind: {
+            path: '$collectedFromUser',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: 'managers',
+            localField: 'collectedBy',
+            foreignField: '_id',
+            as: 'collectedByManager',
+          },
+        },
+        {
+          $unwind: {
+            path: '$collectedByManager',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $addFields: {
+            UserName: {
+              $concat: [
+                { $ifNull: ['$collectedFromUser.firstName', ''] },
+                ' ',
+                { $ifNull: ['$collectedFromUser.lastName', ''] }
+              ]
+            },
+            ManagerName: {
+              $concat: [
+                { $ifNull: ['$collectedByManager.firstName', ''] },
+                ' ',
+                { $ifNull: ['$collectedByManager.lastName', ''] }
+              ]
+            }
+          }
+        },
+        {
+          $project: {
+            collectedFromUser: 0,
+            collectedByManager: 0,
+          },
+        },
+        { $skip: skip },
+        { $limit: limit },
+      ]),
       this.paymentModel.countDocuments(query),
     ]);
+    
   
     // Add `totalCollection` for each record
     const data = rawData.map(payment => {
