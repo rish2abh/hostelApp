@@ -5,7 +5,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @Schema({ timestamps: true })
 export class Room extends Document {
   @ApiProperty({ example: '101', description: 'Room number identifier' })
-  @Prop({ required: true })
+  @Prop({ required: true,unique: true  })
   roomNumber: string;
 
   @ApiProperty({ example: 1, description: 'Floor number where the room is located', minimum: 0 })

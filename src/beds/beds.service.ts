@@ -96,7 +96,7 @@ export class BedsService {
   
     const data = await this.bedModel
       .find(filter)
-      .populate('users', 'firstName lastName email') // Reverse populate from User collection
+      // .populate('users', 'firstName lastName email') // Reverse populate from User collection
       .exec();
   
     return data || [];

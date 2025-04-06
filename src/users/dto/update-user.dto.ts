@@ -3,7 +3,7 @@ import {
   IsPhoneNumber, IsBoolean, IsArray, IsObject, IsDate, 
   IsNumber 
 } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserRole } from '../../entities/user.entity';
 
 export class UpdateUserDto {
@@ -152,4 +152,14 @@ export class UpdateUserDto {
     preferredLanguage: string;
     specialRequirements: string[];
   };
+}
+
+export class UploadImageDto {
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    description: 'Image file to upload',
+  })
+   // Optional if needed, can also be required
+  file: any;
 }

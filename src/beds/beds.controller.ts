@@ -10,14 +10,14 @@ import { Bed, BedStatus } from '../entities/bed.entity';
 import { managerRole } from 'src/entities/managers.entity';
 
 @ApiTags('Beds')
-@ApiBearerAuth()
+// @ApiBearerAuth()
 @Controller('beds')
-@UseGuards(JwtAuthGuard, RolesGuard)
+// @UseGuards(JwtAuthGuard, RolesGuard)
 export class BedsController {
   constructor(private readonly bedsService: BedsService) {}
 
   @Post()
-  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
+  // @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Create bed',
     description: 'Create a new bed record. Only accessible by ADMIN and SUPER_ADMIN roles.'

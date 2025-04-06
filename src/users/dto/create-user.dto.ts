@@ -1,9 +1,11 @@
 import { 
   IsString, IsEmail, IsEnum, IsOptional, MinLength, 
   IsPhoneNumber, IsBoolean, IsArray, IsDate, IsObject, 
-  IsNumber, IsNotEmpty 
+  IsNumber, IsNotEmpty, 
+  IsMongoId
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { UserRole } from '../../entities/user.entity';
 
 export class CreateUserDto {
@@ -39,7 +41,7 @@ export class CreateUserDto {
   isActive?: boolean = true;
 
   @ApiProperty({ example: '+1234567890', description: 'Phone number of the user' })
-  // @IsPhoneNumber()
+  @IsPhoneNumber("IN")
   phoneNumber?: string;
 
   @ApiProperty({ 
@@ -47,15 +49,16 @@ export class CreateUserDto {
     description: 'List of assigned room identifiers' 
   })
   @IsString()
-  assignedRooms?: string;
+  @IsMongoId()
+  assignedRooms?: MongooseSchema.Types.ObjectId;
 
 
   @ApiProperty({ 
     example: '56546546545644', 
     description: 'List of assigned bed identifiers' 
   })
-  @IsString()
-  assignedBed?: string;
+  @IsMongoId()
+  assignedBed?:  MongooseSchema.Types.ObjectId;
 
   @ApiPropertyOptional({
     description: 'List of user documents',

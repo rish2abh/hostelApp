@@ -37,14 +37,25 @@ async function bootstrap() {
       - limit: Items per page (default: 10)
     `)
     .setVersion('1.0')
+    // .addBearerAuth(
+    //   {
+    //     type: 'http',
+    //     scheme: 'bearer',
+    //     bearerFormat: 'JWT',
+    //     description: 'Enter your JWT token',
+    //   },
+    //   'JWT-auth'
+    // )
     .addBearerAuth(
       {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        description: 'Enter your JWT token',
+        name: 'Authorization',
+        description: 'Enter JWT token',
+        in: 'header',
       },
-      'JWT-auth'
+      'access-token', // <-- key used in decorators
     )
     .addTag('Rooms', 'Room management endpoints')
     .addTag('Users', 'User management endpoints')

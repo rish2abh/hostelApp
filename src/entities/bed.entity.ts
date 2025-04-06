@@ -59,7 +59,7 @@ export class Bed extends Document {
     required: false
   })
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  currentOccupantId?: MongooseSchema.Types.ObjectId;
+  assignedUser?: MongooseSchema.Types.ObjectId;
 
   @ApiProperty({
     example: 5000,

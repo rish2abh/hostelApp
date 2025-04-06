@@ -13,6 +13,7 @@ import { BedsModule } from './beds/beds.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ManagerModule } from './manager/manager.module';
 import { ExpenseModule } from './expense/expense.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ExpenseModule } from './expense/expense.module';
     PaymentsModule,
     ManagerModule,
     ExpenseModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],

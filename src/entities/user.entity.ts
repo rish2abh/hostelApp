@@ -60,9 +60,9 @@ export class User extends Document {
   @ApiProperty({ 
     example: '+1234567890',
     description: 'Contact phone number of the user',
-    required: false
+    required: true
   })
-  @Prop()
+  @Prop({required: true})
   phoneNumber?: string;
 
   @ApiProperty({ 
@@ -71,11 +71,16 @@ export class User extends Document {
     type: String,
     required: false
   })
-  @Prop({ type: { type: MongooseSchema.Types.ObjectId, ref: 'Room' } })
+  @Prop({ type: MongooseSchema.Types.ObjectId } )
   assignedRooms: MongooseSchema.Types.ObjectId;
 
-  
-  @Prop({ type: { type: MongooseSchema.Types.ObjectId, ref: 'Bed' } })
+  @ApiProperty({ 
+    example: '507f1f77bcf86cd799439011',
+    description: 'Array of Bed IDs assigned to this user',
+    type: String,
+    required: false
+  })
+  @Prop( {type: MongooseSchema.Types.ObjectId })
   assignedBed: MongooseSchema.Types.ObjectId;
 
   @ApiProperty({

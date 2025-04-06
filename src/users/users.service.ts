@@ -6,12 +6,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { Bed, BedStatus } from 'src/entities/bed.entity';
+import { CloudinaryService } from 'src/common/common.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Bed.name) private bedModel: Model<Bed>,
+    private readonly CloudinaryService : CloudinaryService
+
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -24,9 +27,10 @@ export class UsersService {
       });
   
        if (existingUser)  throw new ConflictException('Email or phone number already exists');
-  
+       console.log(createUserDto, "create");
+       
       const data = await this.userModel.create(createUserDto)
-      await this.bedModel.updateOne({_id:new mongoose.Types.ObjectId(createUserDto.assignedBed)}, {status : BedStatus.OCCUPIED})
+      await this.bedModel.updateOne({_id:createUserDto.assignedBed}, {status : BedStatus.OCCUPIED})
   
       if (!data) throw new InternalServerErrorException('User not created');
 
@@ -42,7 +46,41 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().select('-password').exec();
+    // return this.userModel.find().select('-password').exec();
+    return this.userModel.aggregate([
+      {
+        $lookup : {
+        from : "rooms",
+        localField : "assignedRooms",
+        foreignField : "_id",
+        as : "RoomInfo"
+      }},
+      {
+        $lookup : {
+        from : "beds",
+        localField : "assignedBed",
+        foreignField : "_id",
+        as : "BedInfo"
+      }},
+      {
+        $addFields: {
+          bedNumber : { $arrayElemAt: ['$BedInfo.bedNumber', 0] },
+          roomNumber: { $arrayElemAt: ['$RoomInfo.roomNumber', 0] }
+        }
+      },
+      {
+      $project: {
+        professionalInfo : 0 ,
+        parentInfo : 0,
+        additionalInfo : 0,
+        documents: 0,
+        BedInfo : 0,
+        RoomInfo : 0,
+        contactInfo : 0,
+        assignedRooms :0,
+        assignedBed : 0
+      }
+    }])
   }
 
   async findOne(id: string): Promise<User> {
@@ -102,6 +140,12 @@ export class UsersService {
     // }
 
     return this.userModel.find({ role }).select('-password');
+  }
+
+  async uploadDoc( file: any) {
+  
+    const photo = await this.CloudinaryService.upload(file);
+    return {url : photo}
   }
 
   async assignRoom(userId: string, roomId: string): Promise<User> {
