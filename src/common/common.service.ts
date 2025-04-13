@@ -11,9 +11,9 @@ export class CloudinaryService {
     // cloud_name: process.env.CLOUD_NAME,
     // api_key: process.env.API_KEY,
     // api_secret: process.env.API_SECRET,
-      cloud_name: 'da7mxz5ug', 
-      api_key: '145297316459843', 
-      api_secret: 'drUSLf5ep6O1z4UjxKYp0zjliRk' 
+      cloud_name: 'dljsm8gxi', 
+      api_key: '984486161825914', 
+      api_secret: 'jJgwuEl6SLKeG3_XEzsdsc3tsng' 
   })}
 
 
