@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ManagerService } from './manager.service';
-import { CreateManagerDto, LoginDto } from './dto/create-manager.dto';
+import { CreateManagerDto, DashboardDTO, LoginDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { managerRole } from 'src/entities/managers.entity';
 import { User } from '../auth/decorators/user.decorator';
@@ -36,6 +36,12 @@ export class ManagerController {
   @Get('me')
   getProfile(@User() user: any) {
     return this.managerService.findOne(user._id);
+  }
+
+  @Post('dashboard')
+  dashboard(@User() user: any,
+           @Body() dashBoardDTO : DashboardDTO ) {
+    return this.managerService.dashboard(user,dashBoardDTO);
   }
 
   @Get(':id')

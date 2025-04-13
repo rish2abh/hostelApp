@@ -4,23 +4,23 @@ import { managerRole } from 'src/entities/managers.entity';
 
 export class CreateManagerDto {
 
-  @ApiProperty({ example: 'Rishabh', minLength: 2 })
+  @ApiProperty({ example: 'Rishabh' })
   @IsString()
-  @MinLength(2)
+  // @MinLength(2)
   firstName: string;
 
-  @ApiProperty({ example: 'Shrivastava', minLength: 2 })
+  @ApiProperty({ example: 'Shrivastava'})
   @IsString()
-  @MinLength(2)
+  // @MinLength(2)
   lastName: string;
 
   @ApiProperty({ example: 'rishabh@example.com' })
   @IsEmail()
   email: string;
 
-  @ApiProperty({ example: 'securePass123', minLength: 6 })
+  @ApiProperty({ example: 'securePass123'})
   @IsString()
-  @MinLength(6)
+  // @MinLength(6)
   password: string;
 
  
@@ -61,6 +61,20 @@ export class LoginDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+}
+
+export class DashboardDTO {
+
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z',required: false })
+  @IsString()
+  @IsOptional()
+  startDate?: string;
+
+  @ApiPropertyOptional({ example: '2025-03-01T00:00:00.000Z', required: false})
+  @IsString()
+  @IsOptional()
+  endDate?: string;
 
 }
 

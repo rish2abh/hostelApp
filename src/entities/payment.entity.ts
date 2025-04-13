@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum PaymentStatus {
   PENDING = 'PENDING',
@@ -18,6 +18,14 @@ export class Collection {
   @ApiProperty({ example: 5000, description: 'Amount for the payment', minimum: 0 })
   @Prop({ required: true, min: 0 })
   amount: number;
+
+  @ApiPropertyOptional({ example: 5000, description: 'Amount for the payment',required : false})
+  @Prop({ required: false, min: 0 })
+  oldUnits: number;
+
+  @ApiPropertyOptional({ example: 5000, description: 'Amount for the payment',required : false})
+  @Prop({ required: false, min: 0 })
+  newUnits: number;
 }
 
 export const CollectionSchema = SchemaFactory.createForClass(Collection);

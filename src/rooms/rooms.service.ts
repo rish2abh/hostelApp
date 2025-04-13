@@ -1,14 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { Room } from '../entities/room.entity';
-import { CreateRoomDto } from './dto/create-room.dto';
+import { AssignRoomDTO, CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { User } from 'src/entities/user.entity';
+import { Bed } from 'src/entities/bed.entity';
 
 @Injectable()
 export class RoomsService {
   constructor(
-    @InjectModel(Room.name) private readonly roomModel: Model<Room>
+    @InjectModel(Room.name) private readonly roomModel: Model<Room>,
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(Bed.name) private readonly bedModel: Model<Bed>
   ) {}
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
@@ -47,33 +51,86 @@ export class RoomsService {
     return deletedRoom;
   }
 
-  async assignUser(roomId: string, userId: string): Promise<Room> {
-    const room = await this.roomModel.findById(roomId).exec();
-    if (!room) {
-      throw new NotFoundException(`Room with ID ${roomId} not found`);
-    }
+  async assignUser(assignRoomDTO: AssignRoomDTO): Promise<Room> {
+    const roomId = new Types.ObjectId(assignRoomDTO.roomId);
+    const bedId = new Types.ObjectId(assignRoomDTO.bedId);
+    const userId = new Types.ObjectId(assignRoomDTO.userId);
+  
+    // Step 1: Fetch room with beds
+    const roomBeds = await this.roomModel.aggregate([
+      { $match: { _id: roomId } },
+      {
+        $lookup: {
+          from: "beds",
+          localField: "_id",
+          foreignField: "roomId",
+          as: "beds",
+        }
+      },
+      {
+        $addFields: {
+          occupiedBeds: {
+            $size: {
+              $filter: {
+                input: "$beds",
+                as: "bed",
+                cond: { $eq: ["$$bed.status", "OCCUPIED"] }
+              }
+            }
+          }
+        }
+      }
+    ]);
+  
+    const room = roomBeds[0];
+  
+    if (!room) throw new NotFoundException(`Room with ID ${assignRoomDTO.roomId} not found`);
+  
+    const user = await this.userModel.findById(userId);
+    if( !user ||user.assignedRooms || user.assignedBed) throw new BadRequestException('Selected User have already assign room and bed');
 
-    if (room.isOccupied) {
-      throw new Error('Room is already occupied');
-    }
-
+    const selectedBed = room.beds.find(
+      (bed: any) => bed._id.toString() === bedId.toString()
+    );
+  
+    if (!selectedBed) throw new NotFoundException(`Bed with ID ${assignRoomDTO.bedId} not found in the room`);
+  
+    if (selectedBed.status !== 'AVAILABLE')  throw new BadRequestException('Selected bed is not available');
+  
+    if (room.isOccupied || room.occupiedBeds >= room.capacity)  throw new BadRequestException('Room is already fully occupied');
+  
+    await this.bedModel.findByIdAndUpdate(bedId, {
+      $set: {
+        status: 'OCCUPIED',
+        assignedUser: userId
+      }
+    });
+  
+    await this.userModel.findByIdAndUpdate(userId, {
+      $set: {
+        assignedRoom: roomId,
+        assignedBed: bedId
+      }
+    });
+  
+    const isNowFullyOccupied = room.occupiedBeds + 1 === room.capacity;
+  
     const updatedRoom = await this.roomModel.findByIdAndUpdate(
       roomId,
       {
         $set: {
-          assignedUser: new Types.ObjectId(userId),
-          isOccupied: true
+          isOccupied: isNowFullyOccupied
         }
       },
       { new: true }
-    ).exec();
-
-    if (!updatedRoom) {
-      throw new NotFoundException(`Room with ID ${roomId} not found`);
-    }
+    ).exec()
+  
+    if (!updatedRoom) throw new NotFoundException(`Room with ID ${assignRoomDTO.roomId} not found during update`);
+    
 
     return updatedRoom;
   }
+  
 
   async unassignUser(roomId: string): Promise<Room> {
     const room = await this.roomModel.findById(roomId).exec();

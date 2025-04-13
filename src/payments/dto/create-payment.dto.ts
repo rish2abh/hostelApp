@@ -11,7 +11,7 @@ import {
   IsNumber
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PaymentStatus } from 'src/entities/payment.entity';
 
 
@@ -25,6 +25,16 @@ class PaymentItemDto {
   @IsNumber()
   @Min(0)
   amount: number;
+
+  @ApiPropertyOptional({ example: 5000, description: 'Amount for this payment item',required : false })
+  @IsNumber()
+  @IsOptional()
+  oldUnits?: number;
+
+  @ApiPropertyOptional({ example: 5000, description: 'Amount for this payment item', required : false })
+  @IsNumber()
+  @IsOptional()
+  newUnits?: number;
 }
 
 export class CreatePaymentDto {

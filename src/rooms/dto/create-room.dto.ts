@@ -66,3 +66,35 @@ export class CreateRoomDto {
   @IsOptional()
   isActive?: boolean;
 } 
+
+export class AssignRoomDTO {
+    
+  @ApiProperty({
+    example: '101',
+    description: 'Room Id identifier',
+    required: true
+  })
+  @IsString()
+  @IsNotEmpty()
+  roomId: string;
+
+  @ApiProperty({
+    example: '101',
+    description: 'Bed Id identifier',
+    required: true
+  })
+  @IsString()
+  @IsNotEmpty()
+  bedId: string;
+
+  @ApiProperty({
+    example: '101',
+    description: 'User Id identifier',
+    required: true
+  })
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+
+} 

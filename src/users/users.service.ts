@@ -100,23 +100,17 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    // if (updateUserDto.email) {
-    //   const existingUser = await this.userModel.findOne({
-    //     email: updateUserDto.email,
-    //     _id: { $ne: id },
-    //   });
-    //   if (existingUser) {
-    //     throw new ConflictException('Email already exists');
-    //   }
-    // }
+      const existingUser = await this.userModel.findById(id)
 
-    // if (updateUserDto.password) {
-    //   updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
-    // }
+      if (!existingUser)  throw new ConflictException('Not a valid user');
+     if(existingUser.assignedBed.toString() !==  updateUserDto.assignedRooms?.toString() ){
+      const updatedBed = await this.bedModel
+      .findByIdAndUpdate(existingUser.assignedBed, {status : "AVAILABLE"}, { new: true })
+      .exec();
+     }
 
     const updatedUser = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
-      // .select('-password')
       .exec();
 
     if (!updatedUser) {

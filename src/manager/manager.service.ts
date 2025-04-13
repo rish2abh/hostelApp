@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, UnauthorizedException } from '@nestjs/common';
-import { CreateManagerDto, LoginDto } from './dto/create-manager.dto';
+import { CreateManagerDto, DashboardDTO, LoginDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { Manager, managerRole } from 'src/entities/managers.entity';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import { JwtService } from '@nestjs/jwt'
+import * as moment from 'moment';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
+import { Expense } from 'src/entities/expense.entity';
+import { Payment } from 'src/entities/payment.entity';
 
 
 
@@ -14,6 +17,8 @@ export class ManagerService {
 
   constructor(
      @InjectModel(Manager.name) private managerModel: Model<Manager>,
+     @InjectModel(Expense.name) private expenseModel: Model<Expense>,
+     @InjectModel(Payment.name) private paymentModel: Model<Payment>,
      private readonly jwtService: JwtService,
    ) {}
 
@@ -69,6 +74,90 @@ export class ManagerService {
     }
     return user;
   }
+
+
+
+  async dashboard(user: any, dashBoardDTO: DashboardDTO): Promise<any> {
+    const { startDate, endDate } = dashBoardDTO;
+  
+    const end = endDate ? new Date(endDate) : new Date();
+    const start = startDate ? new Date(startDate) : moment(end).subtract(3, 'months').toDate();
+  
+    // Get all expense and earnings in given date range
+    const expenses = await this.expenseModel.find({
+      expenseDate: { $gte: start, $lte: end },
+    });
+  
+    const earnings = await this.paymentModel.find({
+      date: { $gte: start, $lte: end },
+    });
+  
+    // Current year (used for total)
+    const currentYear = new Date().getFullYear();
+  
+    let yearlyExpenseTotal = 0;
+    let yearlyEarningTotal = 0;
+  
+    const expenseByMonth: Record<string, number> = {};
+    const earningByMonth: Record<string, number> = {};
+  
+    // Process expenses
+    for (const expense of expenses) {
+      const date = new Date(expense.expenseDate);
+      const month = moment(date).format('YYYY-MM');
+      const amount = Number(expense.amount) || 0;
+  
+      // Month-wise
+      expenseByMonth[month] = (expenseByMonth[month] || 0) + amount;
+  
+      // Yearly
+      if (date.getFullYear() === currentYear) {
+        yearlyExpenseTotal += amount;
+      }
+    }
+  
+    // Process earnings
+    for (const payment of earnings) {
+      const date = new Date(payment.date);
+      const month = moment(date).format('YYYY-MM');
+      const total = payment.collectionItems?.reduce((sum, item) => {
+        return sum + (Number(item.amount) || 0);
+      }, 0) || 0;
+  
+      // Month-wise
+      earningByMonth[month] = (earningByMonth[month] || 0) + total;
+  
+      // Yearly
+      if (date.getFullYear() === currentYear) {
+        yearlyEarningTotal += total;
+      }
+    }
+  
+    // Combine unique months
+    const allMonths = Array.from(
+      new Set([...Object.keys(expenseByMonth), ...Object.keys(earningByMonth)])
+    ).sort();
+  
+    const dashboardData = allMonths.map(month => ({
+      month,
+      totalExpense: expenseByMonth[month] || 0,
+      totalEarning: earningByMonth[month] || 0,
+    }));
+  
+    return {
+      startDate: start,
+      endDate: end,
+      data: dashboardData,
+      totalThisYear: {
+        year: currentYear,
+        totalExpense: yearlyExpenseTotal,
+        totalEarning: yearlyEarningTotal,
+      }
+    };
+  }
+  
+  
+  
 
   async findByEmail(email: string): Promise<Manager> {
     const user = await this.managerModel.findOne({ email }).exec();

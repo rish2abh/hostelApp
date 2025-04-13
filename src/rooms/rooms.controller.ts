@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiBody } from '@nestjs/swagger';
 import { RoomsService } from './rooms.service';
-import { CreateRoomDto } from './dto/create-room.dto';
+import { AssignRoomDTO, CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -199,47 +199,14 @@ export class RoomsController {
     return this.roomsService.remove(id);
   }
 
-  @Patch(':id/assign/:userId')
-  @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
+  @Post('assignRoom')
+  // @Roles(managerRole.ADMIN, managerRole.SUPER_ADMIN)
   @ApiOperation({ 
     summary: 'Assign user to room',
     description: 'Assigns a user to a specific room. Only accessible by ADMIN and SUPER_ADMIN roles.'
   })
-  @ApiParam({ 
-    name: 'id', 
-    description: 'Room ID',
-    type: 'string',
-    example: '507f1f77bcf86cd799439011'
-  })
-  @ApiParam({ 
-    name: 'userId', 
-    description: 'User ID to assign to the room',
-    type: 'string',
-    example: '507f1f77bcf86cd799439012'
-  })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'User has been successfully assigned to the room.',
-    type: Room 
-  })
-  @ApiResponse({ 
-    status: 404, 
-    description: 'Room not found.' 
-  })
-  @ApiResponse({ 
-    status: 400, 
-    description: 'Room is already occupied.' 
-  })
-  @ApiResponse({ 
-    status: 401, 
-    description: 'Unauthorized - JWT token is missing or invalid.' 
-  })
-  @ApiResponse({ 
-    status: 403, 
-    description: 'Forbidden - user does not have required roles.' 
-  })
-  assignUser(@Param('id') id: string, @Param('userId') userId: string) {
-    return this.roomsService.assignUser(id, userId);
+  assignUser(@Body() assignRoomDTO :AssignRoomDTO ) {
+    return this.roomsService.assignUser(assignRoomDTO);
   }
 
   @Patch(':id/unassign')
