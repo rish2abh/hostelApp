@@ -97,36 +97,9 @@ export class User extends Document {
   })
   updatedAt: Date;
 
-  // Additional fields
-
-  @ApiProperty({
-    example: [
-      {
-        type: 'Passport',
-        number: '456',
-        expiryDate: '2025-04-09T18:30:00.000Z'
-      }
-    ],
-    description: 'Array of documents associated with the user',
-    isArray: true
-  })
-  @Prop([
-    {
-      type: {
-        type: String,
-        required: true
-      },
-      number: {
-        type: String,
-        required: true
-      },
-      expiryDate: {
-        type: Date,
-        required: true
-      }
-    }
-  ])
-  documents: { type: string; number: string; expiryDate: Date }[];
+  
+  @Prop({ type: [String] })
+  documents: string[];
 
   @ApiProperty({
     example: {

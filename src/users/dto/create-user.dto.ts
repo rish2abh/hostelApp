@@ -68,7 +68,8 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsArray()
-  documents?: { type: string; number: string; expiryDate: Date }[];
+  @IsString({ each: true })
+  documents?: string[];
 
   @ApiPropertyOptional({
     description: 'Information about the user’s parent',
