@@ -25,6 +25,7 @@ export class ManagerController {
   // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   login(@Body() loginDto: LoginDto) {
     return this.managerService.login(loginDto);
+    
   }
 
   @Get("list")
