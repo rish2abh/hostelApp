@@ -60,7 +60,9 @@ async function bootstrap() {
     .addTag('Rooms', 'Room management endpoints')
     .addTag('Users', 'User management endpoints')
     .addTag('Beds', 'Bed management endpoints')
-    .addTag('Auth', 'Authentication endpoints')
+    .addTag('Manager', 'Authentication endpoints')
+    .addTag('Payment', 'Cash Collection endpoints')
+    .addTag('Expense', 'Payout endpoints')
     .setContact('Support Team', 'https://yourwebsite.com', 'support@yourwebsite.com')
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
     .build();
@@ -79,6 +81,6 @@ async function bootstrap() {
     customSiteTitle: 'Hostel Management API Docs',
   });
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
 bootstrap();
