@@ -38,7 +38,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Post('update')
+  @Post('update:id')
   // @Roles(managerRole.SUPER_ADMIN, managerRole.ADMIN)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
