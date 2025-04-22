@@ -14,6 +14,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { ManagerModule } from './manager/manager.module';
 import { ExpenseModule } from './expense/expense.module';
 import { CommonModule } from './common/common.module';
+import { Manager, ManagerSchema } from './entities/managers.entity';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CommonModule } from './common/common.module';
       { name: Room.name, schema: RoomSchema },
       { name: Payment.name, schema: PaymentSchema },
       { name: Expense.name, schema: ExpenseSchema },
+      { name: Manager.name, schema: ManagerSchema },
     ]),
     AuthModule,
     UsersModule,
