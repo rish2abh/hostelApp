@@ -48,7 +48,7 @@ export class UpdateUserDto {
   @IsOptional()
   phoneNumber?: string;
 
-  @ApiPropertyOptional({ example: ['101', '102'], description: 'List of assigned room identifiers' })
+  @ApiPropertyOptional({ example: '101', description: 'List of assigned room identifiers' })
   @IsString()
   @IsMongoId()
   assignedRooms?: MongooseSchema.Types.ObjectId;
