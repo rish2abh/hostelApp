@@ -10,15 +10,15 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({whitelist:true}))
 
   // Enable CORS
-  // app.enableCors();
-  app.enableCors({
-    origin: [
-      'http://localhost',
-      'capacitor://localhost',
-      'http://ec2-13-127-220-124.ap-south-1.compute.amazonaws.com:3000'
-    ],
-    credentials: true, // if using cookies or authorization headers
-  });
+  app.enableCors();
+  // app.enableCors({
+  //   origin: [
+  //     'http://localhost',
+  //     'capacitor://localhost',
+  //     'http://ec2-13-127-220-124.ap-south-1.compute.amazonaws.com:3000'
+  //   ],
+  //   credentials: true, // if using cookies or authorization headers
+  // });
 
   // Configure Swagger
   const config = new DocumentBuilder()

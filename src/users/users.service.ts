@@ -143,6 +143,10 @@ export class UsersService {
   }
 
   async assignRoom(userId: string, roomId: string): Promise<User> {
+    
+if (!mongoose.Types.ObjectId.isValid(userId)) {
+  throw new BadRequestException('Invalid user ID');
+}
     const user = await this.userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
