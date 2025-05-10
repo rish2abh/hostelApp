@@ -1,6 +1,5 @@
 import { IsString, IsNumber, IsArray, IsOptional, Min, IsBoolean, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsRoomNumberUnique } from './custom-validator';
 
 export class CreateRoomDto {
     
@@ -12,7 +11,6 @@ export class CreateRoomDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @IsRoomNumberUnique()
   roomNumber: string;
 
   @ApiProperty({

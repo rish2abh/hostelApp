@@ -1,8 +1,10 @@
 import { 
   IsString, IsEmail, IsEnum, IsOptional, MinLength, 
   IsPhoneNumber, IsBoolean, IsArray, IsObject, IsDate, 
-  IsNumber 
+  IsNumber, 
+  IsMongoId
 } from 'class-validator';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserRole } from '../../entities/user.entity';
 
@@ -42,14 +44,14 @@ export class UpdateUserDto {
   isActive?: boolean;
 
   @ApiPropertyOptional({ example: '+1234567890', description: 'Phone number of the user' })
-  @IsPhoneNumber()
+  // @IsPhoneNumber()
   @IsOptional()
   phoneNumber?: string;
 
-  @ApiPropertyOptional({ example: ['101', '102'], description: 'List of assigned room identifiers' })
-  @IsOptional()
-  @IsArray()
-  assignedRooms?: string[];
+  @ApiPropertyOptional({ example: '101', description: 'List of assigned room identifiers' })
+  @IsString()
+  @IsMongoId()
+  assignedRooms?: MongooseSchema.Types.ObjectId;
 
   @ApiPropertyOptional({
     description: 'Documents associated with the user',

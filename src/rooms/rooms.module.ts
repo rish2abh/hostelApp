@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RoomsController } from './rooms.controller';
 import { RoomsService } from './rooms.service';
 import { Room, RoomSchema } from '../entities/room.entity';
-import { IsRoomNumberUniqueConstraint } from './dto/custom-validator';
 import { User, UserSchema } from 'src/entities/user.entity';
 import { Bed, BedSchema } from 'src/entities/bed.entity';
 
@@ -16,7 +15,7 @@ import { Bed, BedSchema } from 'src/entities/bed.entity';
     ])
   ],
   controllers: [RoomsController],
-  providers: [RoomsService, IsRoomNumberUniqueConstraint],
-  exports: [RoomsService, IsRoomNumberUniqueConstraint]
+  providers: [RoomsService],
+  exports: [RoomsService]
 })
 export class RoomsModule {}
